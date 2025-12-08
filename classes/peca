@@ -1,0 +1,36 @@
+public class Peca {
+
+    private int id;
+    private String tipo; // camisa, calça, toalha...
+    private Servico servico;
+
+    public Peca(int id, String tipo) {
+        this.id = id;
+        this.tipo = tipo;
+    }
+
+    public void setServico(Servico servico) {
+        this.servico = servico;
+    }
+
+    public Servico getServico() {
+        return servico;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getValor() {
+        return servico != null ? servico.getPreco() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return tipo + " (" + (servico != null ? servico.getNome() : "sem serviço") + ")";
+    }
+}

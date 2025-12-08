@@ -1,0 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class SistemaLavanderia {
+
+    private List<Cliente> clientes = new ArrayList<>();
+    private List<OrdemDeServico> ordens = new ArrayList<>();
+
+    public void cadastrarCliente(Cliente cliente) {
+        clientes.add(cliente);
+    }
+
+    public OrdemDeServico criarOS(Cliente cliente) {
+        OrdemDeServico os = new OrdemDeServico(ordens.size() + 1, cliente);
+        ordens.add(os);
+        return os;
+    }
+
+    public Cliente buscarCliente(String nome) {
+        for (Cliente c : clientes) {
+            if (c.getNome().equalsIgnoreCase(nome)) {
+                return c;
+            }
+        }
+        return null;
+    }
+}
