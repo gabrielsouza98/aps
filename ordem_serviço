@@ -1,0 +1,76 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrdemDeServico {
+
+    private int id;
+    private Cliente cliente;
+    private List<Peca> pecas = new ArrayList<>();
+
+    public OrdemDeServico(int id, Cliente cliente) {
+        this.id = id;
+        this.cliente = cliente;
+    }
+
+    public void adicionarPeca(Peca peca) {
+        pecas.add(peca);
+    }
+
+    public List<Peca> getPecas() {
+        return pecas;
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (Peca p : pecas) {
+            total += p.getValor();
+        }
+        return total;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    @Override
+    public String toString() {
+        return "OS #" + id + " - Cliente: " + cliente.getNome() + " - Total: R$ " + calcularTotal();
+    }
+}
+
+/*Método Implementado: Cálculo Automático do Prazo de Entrega
+
+Foi implementado um método adicional dentro da classe OrdemDeServico que calcula 
+automaticamente o prazo total de entrega das peças. Cada tipo de serviço realizado 
+em uma peça adiciona um tempo específico, permitindo ao sistema determinar 
+quantos dias a lavanderia precisará para concluir o atendimento.
+
+Regras utilizadas:
+• Lavar: +1 dia
+• Secar: +1 dia
+• Passar: +1 dia
+• Pacote completo: +2 dias
+
+O método percorre todas as peças cadastradas na Ordem de Serviço, identifica o 
+serviço associado a cada uma e soma os prazos correspondentes. No final, o método 
+retorna o prazo total em dias. Essa funcionalidade torna o sistema mais útil e 
+automatizado, reduzindo erros e padronizando a estimativa de entrega.*/
+
+public int calcularPrazoDias() {
+    int dias = 0;
+
+    for (Peca p : pecas) {
+        Servico serv = p.getServico();
+
+        if (serv != null) {
+            String nome = serv.getNome().toLowerCase();
+
+            if (nome.contains("lavar")) dias += 1;
+            if (nome.contains("secar")) dias += 1;
+            if (nome.contains("passar")) dias += 1;
+            if (nome.contains("pacote completo")) dias += 2;
+        }
+    }
+
+    return dias;
+}
