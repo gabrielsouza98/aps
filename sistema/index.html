@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lavanderia Automatizada</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            box-shadow: 0 0 10px #999;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        #tela-principal { display: none; }
+        #listaPecas li { margin: 5px 0; }
+    </style>
+</head>
+
+<body>
+
+<div class="container" id="tela-login">
+    <h2>Login</h2>
+
+    <input type="text" id="usuario" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
+    <button onclick="fazerLogin()">Entrar</button>
+
+    <p style="text-align:center; color:red; display:none;" id="erroLogin">Usuário ou senha incorretos.</p>
+</div>
+
+<div class="container" id="tela-principal">
+    <h2>Lavanderia Automatizada</h2>
+
+    <input type="text" id="nomeCliente" placeholder="Nome do Cliente">
+
+    <label>Tipo da Peça</label>
+    <select id="tipoPeca">
+        <option>Camisa</option>
+        <option>Calça</option>
+        <option>Toalha</option>
+        <option>Roupa Delicada</option>
+    </select>
+
+    <label>Serviço</label>
+    <select id="servico">
+        <option>Lavar</option>
+        <option>Secar</option>
+        <option>Passar</option>
+        <option>Pacote Completo</option>
+    </select>
+
+    <button onclick="adicionarPeca()">Adicionar Peça</button>
+
+    <h3>Peças Adicionadas:</h3>
+    <ul id="listaPecas"></ul>
+
+    <button onclick="calcularTotal()">Calcular Total</button>
+</div>
+
+<script>
+    function fazerLogin() {
+        let usuario = document.getElementById("usuario").value;
+        let senha = document.getElementById("senha").value;
+
+        if (usuario === "admin" && senha === "123") {
+            document.getElementById("tela-login").style.display = "none";
+            document.getElementById("tela-principal").style.display = "block";
+        } else {
+            document.getElementById("erroLogin").style.display = "block";
+        }
+    }
+
+    let pecas = [];
+
+    function adicionarPeca() {
+        let tipo = document.getElementById("tipoPeca").value;
+        let servico = document.getElementById("servico").value;
+
+        pecas.push({ tipo, servico });
+
+        atualizarLista();
+    }
+
+    function atualizarLista() {
+        let lista = document.getElementById("listaPecas");
+        lista.innerHTML = "";
+
+        pecas.forEach((p, i) => {
+            lista.innerHTML += `<li>${p.tipo} - Serviço: ${p.servico}</li>`;
+        });
+    }
+
+    function calcularTotal() {
+        let total = 0;
+        let prazo = 0;
+
+        pecas.forEach(p => {
+            // Preços fictícios (podem ser alterados)
+            if (p.servico === "Pacote Completo") {
+                total += 20;
+                prazo += 2;
+            } else {
+                total += 10;
+
+                // MÉTODO ESPECIAL (CÁLCULO AUTOMÁTICO DO PRAZO)
+                if (p.servico === "Lavar") prazo += 1;
+                if (p.servico === "Secar") prazo += 1;
+                if (p.servico === "Passar") prazo += 1;
+            }
+        });
+
+        alert(
+            "Cliente: " + document.getElementById("nomeCliente").value +
+            "\nTotal de peças: " + pecas.length +
+            "\nValor total: R$ " + total +
+            "\nPrazo estimado: " + prazo + " dias"
+        );
+    }
+</script>
+
+</body>
+</html>
